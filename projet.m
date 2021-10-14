@@ -2,7 +2,7 @@ clear all
 close all
 
 %Matrice pas bonne car contient que des 0 et donc les pop disparaissent 
-[L,val] = DataImporter('asterix_char1.json')
+[L,val] = DataImporter('asterix_char1.json');
 % L = [0 0.5 0 0 0;
 %     0 0 0 0 0;
 %     1 0.5 0 0 0;
@@ -11,7 +11,7 @@ close all
 
 
 %parametres
-alpha = 0.85
+alpha = 0.85;
 
 [l,c] = size(L);
 mat1 = ones(l);
@@ -37,10 +37,10 @@ M=alpha*S+(1-alpha)*(mat1/N);
 
 %graphes
 
-nmax = 24%nb total de pas deplacement de site en site
+nmax = 24;%nb total de pas deplacement de site en site
 N = zeros(l,nmax);
-N(1,1)= 0.1;
-N(5,1)= 0.2;
+N(:,1)= 0.5;
+%N(5,1)= 0.2;
 
 for n =2 : nmax
     N(:,n)=(M^n)*N(:,1);
@@ -51,12 +51,6 @@ characters = {val.character_name};
 p = plot(transpose(N));
 
 legend(characters(1:10));
-%legend('Site1','Site2 ','Site3','Site4','Site5')
-
-%size(characters)
-%c= ones(71,24)'
-
-%row = dataTipTextRow('Site=',characters)
 
 for i=1:l
     C = cell(1, l);
@@ -65,18 +59,31 @@ for i=1:l
     p(i).DataTipTemplate.DataTipRows(end+1:end+1) = sadf;
 end
 
-nbTop = 10;
+nbTop = l;
 [bigvalues, bigidx] = sort(N(:,nmax), 'descend');
+
 
 disp('ranking :');
 for i=1:nbTop
     fprintf('%d) %s with %d ranking.\n',i,val(bigidx(i)).character_name,bigvalues(i));
 end
 
+%Affichage Bar Chart
 
-%p.DataTipTemplate.DataTipRows(end+1) = row;
-%p.DataTipTemplate.DataTipRows = [p.DataTipTemplate.DataTipRows,row];
+figure;
+[bigvalues(1:10)]
+[val(bigidx(1:10)).character_name]
 
+
+%bar(N(:,nmax))
+%set(gca, 'XTickLabel',characters, 'XTick',1:numel(characters))
+%xtickangle(90)
+
+colors = rand(l,3);
+wordcloud(characters,N(:,nmax),'Color',colors)
+
+%wordcloud(characters,N(:,nmax))
+%title("Characters page Word Cloud")
 
 
 %s = [1 2 2 4 5];
