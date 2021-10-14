@@ -2,7 +2,7 @@ clear all
 close all
 
 %Matrice pas bonne car contient que des 0 et donc les pop disparaissent 
-[L,val] = DataImporter('asterix_char1.json');
+[L,val] = DataImporter('asterix_char2.json');
 % L = [0 0.5 0 0 0;
 %     0 0 0 0 0;
 %     1 0.5 0 0 0;

@@ -29,7 +29,7 @@ for i=1:taille
     mesLinks = val(i).links;
     for l=1:size(mesLinks)
         proba = 1.0/size(mesLinks,1);
-        %char(mesLinks(l))
+        char(mesLinks(l))
         colonneInd = mapLinkToInd(char(mesLinks(l)))
         m(colonneInd,i) = proba;
     end
