@@ -68,23 +68,48 @@ for i=1:nbTop
     fprintf('%d) %s with %d ranking.\n',i,val(bigidx(i)).character_name,bigvalues(i));
 end
 
-%Affichage Bar Chart
+%=============Affichage Bar Chart
+figure;
+bar(N(:,nmax));
+set(gca, 'XTickLabel',characters, 'XTick',1:numel(characters));
+xtickangle(90);
+
+
+%============Affichage Cloud 
+figure;
+colors = rand(l,3);
+wordcloud(characters,N(:,nmax),'Color',colors);
+title("Characters page Word Cloud");
 
 figure;
-[bigvalues(1:10)]
-[val(bigidx(1:10)).character_name]
+mc = dtmc(M);
+e = eig(mc.P);
+
+%A Opti et rendre plus beau
+categ = ["Belges","Bretons","Corses","Gaulois","Goths","Grecs","Helvètes","Ibères","Indiens","Normands","Numides","Phéniciens","Pictes","Pirates","Romains","Égyptiens"];
+hold on;
+%all_marks = {'o','+','*','.','x','s','d','^','v','>','<','p','h'};
+for i=1:length(categ)
+    inds = [];
+    currCat = categ(i); 
+    for j=1:l
+        if (sum(strcmp(string(val(j).categories),currCat)) > 0)%si currCat est contenu dans arr de categories
+            inds(end+1) = j;
+        end
+    end
+    scatter(real(e(inds)),imag(e(inds)),'DisplayName',currCat,'Marker','x')
+end
+legend(categ)
+hold off
+
+%===================Affichage Spectre mais probleme pas de couleurs
+figure;
+[eVals,h] = eigplot(mc);
+
+%=================Affichage Avec Scatter
 
 
-%bar(N(:,nmax))
-%set(gca, 'XTickLabel',characters, 'XTick',1:numel(characters))
-%xtickangle(90)
-
-colors = rand(l,3);
-wordcloud(characters,N(:,nmax),'Color',colors)
-
-%wordcloud(characters,N(:,nmax))
-%title("Characters page Word Cloud")
-
+%==================Reste
 
 %s = [1 2 2 4 5];
 %t = [3 1 3 5 4];
