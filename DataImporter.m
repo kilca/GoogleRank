@@ -1,19 +1,22 @@
 function [mat,v] = DataImporter(lien)
 
+%============= On lit le fichier
 fname = lien; 
 fid = fopen(fname); 
 raw = fread(fid,inf); 
 str = char(raw'); 
 fclose(fid); 
+
 val = jsondecode(str);
 
-%val = val(randperm(length(val)));
 
 taille = size(val,1);
 m=zeros(taille,taille);
 
+%on cree une map pour optimiser l'acces
 mapLinkToInd = containers.Map;
 
+%on prepare les personnages
 characters = blanks(taille);
 
 size(characters);
@@ -33,7 +36,8 @@ for i=1:taille
         m(colonneInd,i) = proba;
     end
 end
-        
+
+%on retourne les valeurs
 mat =m;
 v = val;
 end

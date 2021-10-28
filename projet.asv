@@ -61,7 +61,7 @@ T1s2 = (-log(a) * dt) / (log(sigma2)) % On calcule T de 1 sur 2
 
 %===On Verifie le calcul
 
-pi = N(:,80);
+pi = N(:,100);
 
 %On verifie que le pourcentage est correct
 sum(pi,1)%doit etre egale a 1
@@ -76,8 +76,8 @@ sum(abs(ds))%devrait etre proche de 0
 characters = {val.character_name};
 
 p = plot(transpose(N));
-xlabel('Temps');
-ylabel({'Proportion','d utilisateur par page'});
+xlabel('Temps')
+ylabel({'Proportion','d utilisateur par page'})
 legend(characters(1:10));
 
 for i=1:l
@@ -98,19 +98,19 @@ for i=1:nbTop
 end
 
 %=============Affichage Bar Chart
-topn = 20;
-
 figure;
-bar(bigvalues(1:topn));
+bar(bigvalues(1:30));
 
-xtl = {};
+xtl = [];
+xt = []
 
-for i=1:topn
-    xtl{end+1} = val(bigidx(i)).character_name;
+for i=1:30
+    xtl(end+1) = val(bigidx(i)).character_name;
+    xt = numel(val(bigidx(i)).character_name);
 end
-set(gca, 'XTickLabel',xtl, 'XTick',1:numel(xtl));
-ylabel({'Proportion','d utilisateur par page'});
-xtickangle(90);
+
+set(gca, 'XTickLabel',[val(bigidx(1:30)).character_name], 'XTick',numel(val(bigidx(1:30)).character_name));
+%xtickangle(90);
 
 
 %============Affichage Cloud 
@@ -123,8 +123,8 @@ title("Characters page Word Cloud");
 %============ Variation d'alpha
 alphas = 0.1:0.1:0.9;
 Ts = [];
-for alp=alphas
-    M=alp*S+(1-alp)*(mat1/Nm);
+for a=alphas
+    M=a*S+(1-a)*(mat1/Nm);
     [V,D] = eig(M);%M = V*D*V-1
     V2 = abs(diag(D));
     ii = sort(V2);
