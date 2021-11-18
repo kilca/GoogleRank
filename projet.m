@@ -39,9 +39,9 @@ M=alpha*S+(1-alpha)*(mat1/Nm);
 
 nmax = 120;%nb total de pas deplacement de site en site
 N = zeros(l,nmax);
-N(:,1)= 1/l%1*(100/l);%Chaque page commence avec un pourcentage equivalent
+%N(:,1)= 1/l%1*(100/l);%Chaque page commence avec un pourcentage equivalent
+N(1:50,1)= 1/50;%Les 50 premiers ont 1/50 de pourcentage
 
-%N(5,1)= 0.2;
 
 for n =2 : nmax
     N(:,n)=(M^n)*N(:,1);
@@ -64,12 +64,11 @@ T1s2 = (-log(a) * dt) / (log(sigma2)) % On calcule T de 1 sur 2
 pi = N(:,80);
 
 %On verifie que le pourcentage est correct
-sum(pi,1)%doit etre egale a 1
+disp(['somme des pi (doit etre egale a 1):  ', num2str(sum(pi,1))])
 
 ds= M * pi -  pi;
 
-sum(abs(ds))%devrait etre proche de 0
-
+disp(['somme des M*pi-pi (doit etre proche de 0):  ', num2str(sum(abs(ds)))])
 
 %============== Affichage de l'évolution des personnes sur les sites
 
@@ -121,8 +120,9 @@ title("Characters page Word Cloud");
 
 
 %============ Variation d'alpha
-alphas = 0.1:0.1:0.9;
+alphas = 0.05:0.1:1.0;
 Ts = [];
+
 for alp=alphas
     M=alp*S+(1-alp)*(mat1/Nm);
     [V,D] = eig(M);%M = V*D*V-1
@@ -136,28 +136,4 @@ figure;
 plot(alphas,Ts)
 xlabel('alpha')
 ylabel('t_{1/2}')
-
-
-
-%============= Affichage du Spectre des valeurs propres
-
-% figure;
-% mc = diag(1./sum(M,2))*M;
-% e = eig(D)
-% 
-% categ = ["Belges","Bretons","Corses","Gaulois","Goths","Grecs","Helvètes","Ibères","Indiens","Normands","Numides","Phéniciens","Pictes","Pirates","Romains","Égyptiens"];
-% hold on;
-% all_marks = ['o','+','*','.','x','s','d','^','v','>','<','p','h','x','*','d'];
-% for i=1:length(categ)
-%     inds = [];
-%     currCat = categ(i); 
-%     for j=1:l
-%         if (sum(strcmp(string(val(j).categories),currCat)) > 0)%si currCat est contenu dans arr de categories
-%             inds(end+1) = j;
-%         end
-%     end
-%     scatter(real(e(inds)),imag(e(inds)),'DisplayName',currCat,'Marker',all_marks(i))
-% end
-% legend(categ)
-% hold off
 
